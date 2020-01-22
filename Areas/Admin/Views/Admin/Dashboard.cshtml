@@ -1,0 +1,153 @@
+﻿@model Shop.Models.AdminViewModels.DashboardViewModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<section class="wrapper">
+    <!-- //market-->
+    <div class="market-updates">
+        @*<div class="col-md-3 market-update-gd">
+                <div class="market-update-block clr-block-2 Lennertpopupnomargin clickable" onclick="window.location = '@Url.Action("SellerRequest", "Admin", null)';">
+                    <div class="col-md-4 market-update-right">
+                        <i class="fas fa-handshake font-size-60"> </i>
+                    </div>
+                    <div class="col-md-8 market-update-left">
+                        <h4>Yêu cầu người bán</h4>
+                        <h3>@Model.NumberofSellerRequests</h3>
+                    </div>
+                    <div class="clearfix"> </div>
+                </div>
+            </div>
+            <div class="col-md-3 market-update-gd">
+                <div class="market-update-block clr-block-4 Lennertpopupnomargin clickable" onclick="window.location = '@Url.Action("ItemsRequests", "Admin", null)';">
+                    <div class="col-md-4 market-update-right">
+                        <i class="fas fa-gift font-size-60"></i>
+                    </div>
+                    <div class="col-md-8 market-update-left">
+                        <h4>Yêu cầu mặt hàng</h4>
+                        <h3>@Model.NumberofItemsRequests</h3>
+                    </div>
+                    <div class="clearfix"> </div>
+                </div>
+            </div>*@
+        <div class="col-md-3 market-update-gd">
+            <div class="market-update-block clr-block-1 Lennertpopupnomargin clickable" onclick="window.location = '@Url.Action("SoldItems", "Admin", null)';">
+                <div class="col-md-4 market-update-right">
+                    <i class="fas fa-cloud-download-alt font-size-60"></i>
+                </div>
+                <div class="col-md-8 market-update-left">
+                    <h4>Biên lai đã xuất</h4>
+                    <h3>@Model.NumberofItemsSold1M</h3>
+                </div>
+                <div class="clearfix"> </div>
+            </div>
+        </div>
+        @*<div class="col-md-3 market-update-gd">
+            <div class="market-update-block clr-block-3 Lennertpopupnomargin clickable" onclick="window.location = '@Url.Action("UsedItems", "Admin", null)';">
+                <div class="col-md-4 market-update-right">
+                    <i class="fas fa-cloud-upload-alt font-size-60" aria-hidden="true"></i>
+                </div>
+                <div class="col-md-8 market-update-left">
+                    <h4>Biên lai đã bán</h4>
+                    <h3>@Model.NumberUsedItems1M</h3>
+                </div>
+                <div class="clearfix"> </div>
+            </div>
+        </div>*@
+        <div class="clearfix"> </div>
+    </div>
+    <!-- //market-->
+    <div class="row">
+        <div class="panel-body">
+            <div class="col-md-12 w3ls-graph">
+                <div class="panel-heading">
+                    Số lượng điện thoại bán trong tháng
+                </div>
+                <!--agileinfo-grap-->
+                <div class="agileinfo-grap">
+                    <div class="agileits-box">
+
+                        <header class="agileits-box-header clearfix">
+                            <div class="toolbar">
+                            </div>
+                        </header>
+                        <div class="agileits-box-body clearfix">
+                            <div id="hero-area"></div>
+                        </div>
+                    </div>
+                </div>
+                <!--//agileinfo-grap-->
+
+            </div>
+        </div>
+    </div>
+    <div class="agileits-w3layouts-stats">
+        <div class="col-md-12 stats-info stats-last widget-shadow">
+            <div class="panel-heading">
+                Điện thoại bán gần đây
+            </div>
+            <div class="stats-last-agile">
+                <table class="table stats-table ">
+                    <thead>
+                        <tr>
+                            <th>NGÀY</th>
+                            <th>Điện thoại</th>
+                            <th>SỐ TIỀN</th>
+                            <th>CHI TIẾT</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var items in Model.RecentlySoldList)
+                        {
+                            <tr>
+                                <th scope="row">@items.Date</th>
+                                <td>
+                                    @items.Name
+                                </td>
+                                <td>
+                                    @items.Amount.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("vi-vn"))
+                                </td>
+                                <td><a asp-controller="Home" asp-action="Detail" asp-route-slug="@items.Slug" ><i class="fas fas fa-ellipsis-h"></i></a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="clearfix"> </div>
+    </div>
+</section>
+
+<!-- Do thi -->
+<script>
+    $(document).ready(function () {
+       
+        new Morris.Line({
+              // ID of the element in which to draw the chart.
+              element: 'hero-area',
+              // Chart data records -- each entry in this array corresponds to a point on
+              // the chart.
+            data: [
+                  @foreach (var graphData in Model.GraphDataList)
+                {
+                <Text>
+                    {
+                        date: "@graphData.Date",
+                        value: "@graphData.AmountSold"
+                    },
+                </Text>
+                }
+            ],
+              resize: true,
+              // The name of the data record attribute that contains x-values.
+              xkey: 'date',
+              // A list of names of data record attributes that contain y-values.
+              ykeys: ['value'],
+              // Labels for the ykeys -- will be displayed when you hover over the
+              // chart.
+              labels: ['Số lượng bán']
+            });
+    });
+</script>

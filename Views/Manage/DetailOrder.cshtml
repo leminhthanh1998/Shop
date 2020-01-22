@@ -1,0 +1,62 @@
+﻿@using Shop.Models.Domain
+@using Shop.Models.Domain.Enum
+
+@{
+    ViewData["Title"] = "Chi tiết đặt hàng";
+    int count = 1;
+}
+
+
+<div class="page-container ptb-10">
+    <div class="container width-100">
+        <section class="sign-area panel p-40 mr-10">
+            <div class="button-back">
+                <a asp-controller="Manage" asp-action="PersonalOrder" class="btn btn-sm btn-block mb-10">
+                    <i class="fas fa-arrow-left"></i>
+                    Quay lại đơn hàng
+                </a>
+
+            </div>
+            
+            <h4 class="mb-10">@ViewData["Title"] @ViewData["orderId"]</h4>
+            @if (ViewData["OrderItem"] == null)
+            {
+            <p>Đơn hàng của bạn không thể nhận được.</p>
+            }
+            else
+            {
+
+                <table style="width:100%" class="spacing-10">
+                    <tr>
+                        <th>STT</th>
+                        <th>
+                            Tên mặt hàng
+                        </th>
+                        <th>Số tiền</th>
+                        <th>
+                            Số lượng
+                        </th>
+                        
+                    </tr>
+                    @foreach (DetailOrderModel b in (IEnumerable<DetailOrderModel>)ViewData["OrderItem"])
+                    {
+                    <tr>
+                        <td>@(count++)</td>
+                        <td>@b.Name</td>
+                        <td>@b.Price.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("vi-vn"))</td>
+                        <td>@b.Count</td>
+                        
+                        @*<td>
+                            <a target="_blank" href="~/pdf/c_@(b.QRCode).pdf" class="btn btn-sm btn-block">
+                                Tải về phiếu mua hàng
+                            </a>
+                        </td>*@
+                        <td><a asp-controller="Home" asp-action="Detail" asp-route-slug="@b.Slug" class="btn btn-sm btn-block m-lg-10">Chi tiết</a></td>
+                    </tr>
+                    }
+
+                </table>
+            }
+        </section>
+    </div>
+</div>

@@ -1,0 +1,119 @@
+﻿@model Shop.Models.AdminViewModels.SoldItemsViewModel
+
+@{
+    ViewData["Title"] = "Chi tiết hóa đơn";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+     int count = 1;
+}
+
+<section class="wrapper">
+    <h1 class="text-center"></h1>
+    <section class="panel">
+        <header class="panel-heading">Chi tiết hóa đơn: @Model.Id</header>
+        <div class="panel-body">
+            <form method="post" enctype="multipart/form-data" class="form-horizontal bucket-form">
+                <div class="form-group">
+                    <label asp-for="Id" class="col-sm-3 control-label"></label>
+                    <div class="col-sm-6">
+                        <input type="text" asp-for="Id" class="form-control" readonly>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="CreationDate" class="col-sm-3 control-label"></label>
+                    <div class="col-sm-6">
+                        <input type="text" asp-for="CreationDate" class="form-control" readonly>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Status" class="col-sm-3 control-label"></label>
+                    <div class="col-sm-6">
+                        <span class="label @Model.StatusClass">@Model.Status</span>
+                    </div>
+                </div>
+                @if (Model.Status == "used")
+                {
+                    <div class="form-group">
+                        <label asp-for="UseDate" class="col-sm-3 control-label"></label>
+                        <div class="col-sm-6">
+                            <input type="text" asp-for="UseDate" class="form-control" readonly>
+                        </div>
+                    </div>
+                }
+                <div class="form-group">
+                    <label asp-for="StationName" class="col-sm-3 control-label"></label>
+                    <div class="col-sm-6">
+                        <input type="text" asp-for="StationName" class="form-control" readonly>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="EmailSender" class="col-sm-3 control-label"></label>
+                    <div class="col-sm-6">
+                        <input type="text" asp-for="EmailSender" class="form-control" readonly>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Address" class="col-sm-3 control-label"></label>
+                    <div class="col-sm-6">
+                        <input type="text" asp-for="Address" class="form-control" readonly>
+                    </div>
+                </div>
+                @*<div class="form-group">
+            <label asp-for="NameReciever" class="col-sm-3 control-label"></label>
+            <div class="col-sm-6">
+                <input type="text" asp-for="NameReciever" class="form-control" readonly>
+            </div>
+        </div>*@
+                @if (Model.EmailReciever != "" && Model.EmailReciever != null)
+                {
+                    <div class="form-group">
+                        <label asp-for="EmailReciever" class="col-sm-3 control-label"></label>
+                        <div class="col-sm-6">
+                            <input type="text" asp-for="EmailReciever" class="form-control" readonly>
+                        </div>
+                    </div>
+                }
+
+                <div class="col-md-9 col-md-offset-3">
+                    <a asp-controller="Admin" asp-action="SoldItems" class="btn btn-success mr-20">Quay lại</a>
+                </div>
+
+                @if (!Model.DetailOrders.Any())
+                {
+                    <p>Đơn hàng của bạn không thể nhận được.</p>
+                }
+                else
+                {
+
+                    <table style="width:100%" class="spacing-10">
+                        <tr>
+                            <th>STT</th>
+                            <th>
+                                Tên mặt hàng
+                            </th>
+                            <th>Số tiền</th>
+                            <th>
+                                Số lượng
+                            </th>
+
+                        </tr>
+                        @foreach (DetailOrderModel b in Model.DetailOrders)
+                        {
+                            <tr>
+                                <td>@(count++)</td>
+                                <td>@b.Name</td>
+                                <td>@b.Price.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("vi-vn"))</td>
+                                <td>@b.Count</td>
+
+                                <td><a asp-controller="Home" asp-action="Detail" asp-route-slug="@b.Slug" class="btn btn-sm btn-block m-lg-10">Chi tiết</a></td>
+                            </tr>
+                        }
+
+                    </table>
+                }
+
+
+            </form>
+        </div>
+    </section>
+</section>
