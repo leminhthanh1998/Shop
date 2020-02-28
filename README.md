@@ -1,2 +1,2 @@
-# 3brosshop
-Đồ án 1
+# TH-Phone
+A simple ecommerce system built on .NET Core.
